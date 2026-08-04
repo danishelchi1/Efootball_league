@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (!state.fixtures.length) {
     generateFixtures();
     seedRound1And2Results();
-    saveState();
+    saveLocalOnly();
   }
   renderAll();
   buildRoundFilter();
@@ -175,26 +175,32 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('admin-pin-input')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') submitAdminLogin();
   });
+
+  // ── Cloud sync: fetch latest on load, then poll every 30 s ──
+  fetchCloudData(true);
+  startSyncPolling();
 });
 
 /* ═══════════════════════════════════════
    LOCAL STORAGE
 ═══════════════════════════════════════ */
-function saveState() {
+function saveLocalOnly() {
   try { localStorage.setItem('flm_state', JSON.stringify(state)); } catch(e) {}
+}
+/** saveState = local + cloud push (if admin + token set) */
+function saveState() {
+  saveLocalOnly();
+  if (isAdmin() && getSyncToken()) pushCloudData();
 }
 function loadState() {
   try {
     const raw = localStorage.getItem('flm_state');
     if (raw) {
       const saved = JSON.parse(raw);
-      // ── Version migration: if saved data is stale, wipe and re-seed ──
       if (!saved._v || saved._v < STATE_VERSION) {
         console.log('🔄 State version mismatch — resetting to v' + STATE_VERSION);
         state = getDefaultState();
-        // Preserve theme preference
         if (saved.theme) state.theme = saved.theme;
-        // Force fresh fixture generation with seed (handled in DOMContentLoaded)
       } else {
         state = { ...state, ...saved };
       }
@@ -210,6 +216,150 @@ function getDefaultState() {
     fixtures: [], scorers: {}, lockedRounds: {},
     theme: 'dark', activity: [], undoStack: []
   };
+}
+
+/* ═══════════════════════════════════════
+   CLOUD SYNC — GitHub as database
+   ‣ READ  : raw.githubusercontent.com (public, no auth)
+             → all 12 players auto-fetch every 30 s
+   ‣ WRITE : GitHub REST API with Admin's PAT
+             → only Admin device pushes data.json
+   ‣ PAT is stored ONLY in Admin's own localStorage
+             → never embedded in source code
+═══════════════════════════════════════ */
+const CLOUD_OWNER      = 'danishelchi1';
+const CLOUD_REPO       = 'Efootball_league';
+const CLOUD_FILE       = 'data.json';
+const SYNC_TOKEN_STORE = 'flm_gh_token';
+// Fields that are shared across all devices (theme/undoStack are local-only)
+const SYNC_FIELDS = ['_v','leagueName','players','fixtures','scorers','lockedRounds','activity'];
+
+let _syncPollTimer = null;
+
+function getSyncToken() {
+  return localStorage.getItem(SYNC_TOKEN_STORE) || '';
+}
+function setSyncTokenUI() {
+  const inp = document.getElementById('sync-token-input');
+  const tok = inp ? inp.value.trim() : '';
+  if (!tok.startsWith('ghp_') && !tok.startsWith('github_pat_')) {
+    showToast('Invalid token format!', true); return;
+  }
+  localStorage.setItem(SYNC_TOKEN_STORE, tok);
+  if (inp) inp.value = '';
+  showToast('Sync token saved! ☁️');
+  // Immediately push current state
+  pushCloudData();
+}
+
+function setSyncStatus(status) {
+  const btn   = document.getElementById('sync-btn');
+  const badge = document.getElementById('sync-badge');
+  const states = {
+    syncing: { text: '🔄', title: 'Syncing…',    cls: 'badge-syncing' },
+    ok:      { text: '☁️', title: 'Cloud synced', cls: 'badge-ok'      },
+    error:   { text: '⚠️', title: 'Sync error',   cls: 'badge-error'   },
+    idle:    { text: '☁️', title: 'Cloud sync',   cls: 'badge-idle'    },
+  };
+  const s = states[status] || states.idle;
+  if (btn) { btn.textContent = s.text; btn.title = s.title; }
+  if (badge) {
+    badge.className = `sync-badge ${s.cls}`;
+    badge.textContent = s.title;
+  }
+}
+
+async function fetchCloudData(silent = false) {
+  setSyncStatus('syncing');
+  try {
+    const url = `https://raw.githubusercontent.com/${CLOUD_OWNER}/${CLOUD_REPO}/main/${CLOUD_FILE}?t=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const cloud = await res.json();
+
+    if (!cloud || !cloud._v || !Array.isArray(cloud.fixtures)) {
+      setSyncStatus('idle'); return;
+    }
+
+    // Find newest played-match timestamp in cloud vs local
+    const ts = arr => Math.max(0, ...arr.filter(f => f.played && f.timestamp).map(f => f.timestamp));
+    const cloudTs = ts(cloud.fixtures);
+    const localTs = ts(state.fixtures);
+
+    // Non-admins ALWAYS take cloud; Admin only takes cloud if it's newer
+    if (!isAdmin() || cloudTs > localTs) {
+      const savedTheme = state.theme;
+      SYNC_FIELDS.forEach(k => { if (cloud[k] !== undefined) state[k] = cloud[k]; });
+      state.theme = savedTheme;  // keep device theme
+      saveLocalOnly();
+      renderAll();
+      buildRoundFilter();
+      populateScorerSelect();
+    }
+    setSyncStatus('ok');
+    if (!silent) showToast('Synced from cloud ☁️');
+  } catch(e) {
+    setSyncStatus('error');
+    if (!silent) showToast('Cloud sync failed — check connection', true);
+    console.warn('fetchCloudData error:', e);
+  }
+}
+
+async function pushCloudData() {
+  const token = getSyncToken();
+  if (!token) return;   // No token on this device — skip push
+  setSyncStatus('syncing');
+  try {
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json'
+    };
+    const apiUrl = `https://api.github.com/repos/${CLOUD_OWNER}/${CLOUD_REPO}/contents/${CLOUD_FILE}`;
+
+    // Get current SHA (required by GitHub API for updates)
+    const shaRes  = await fetch(apiUrl, { headers });
+    const shaJson = await shaRes.json();
+    const sha     = shaJson.sha;
+
+    // Build payload (only sync fields, skip theme/undoStack)
+    const payload = {};
+    SYNC_FIELDS.forEach(k => { payload[k] = state[k]; });
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT', headers,
+      body: JSON.stringify({
+        message: `sync: match update ${new Date().toISOString().slice(0,16)}`,
+        content, sha, branch: 'main'
+      })
+    });
+    if (!putRes.ok) {
+      const err = await putRes.json();
+      throw new Error(err.message || putRes.status);
+    }
+    setSyncStatus('ok');
+    showToast('Saved & synced to cloud ☁️');
+  } catch(e) {
+    setSyncStatus('error');
+    console.error('pushCloudData error:', e);
+    showToast('Saved locally — cloud push failed ⚠️', true);
+  }
+}
+
+function manualSync() {
+  fetchCloudData(false);
+}
+
+function startSyncPolling() {
+  if (_syncPollTimer) clearInterval(_syncPollTimer);
+  // Poll every 30 seconds
+  _syncPollTimer = setInterval(() => fetchCloudData(true), 30000);
+  // Refresh on tab focus (e.g. player switches from another tab/app)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) fetchCloudData(true);
+  });
 }
 
 /* ═══════════════════════════════════════
