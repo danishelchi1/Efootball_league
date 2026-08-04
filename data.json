@@ -249,12 +249,12 @@
       "round": 4,
       "home": 1,
       "away": 6,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 4,
+      "awayScore": 2,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785881822715
     },
     {
       "id": 21,
@@ -814,6 +814,11 @@
     "6": true
   },
   "activity": [
+    {
+      "text": "R4: <b>Danish Elchi</b> 4–2 <b>As Afnan</b> saved",
+      "icon": "⚽",
+      "time": 1785881822715
+    },
     {
       "text": "R4: <b>Abubakar Khokar</b> 2–1 <b>Saani Asnain</b> saved",
       "icon": "⚽",
