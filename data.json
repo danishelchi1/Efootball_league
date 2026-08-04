@@ -285,12 +285,12 @@
       "round": 4,
       "home": 8,
       "away": 9,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 2,
+      "awayScore": 1,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785881801711
     },
     {
       "id": 24,
@@ -814,6 +814,11 @@
     "6": true
   },
   "activity": [
+    {
+      "text": "R4: <b>Abubakar Khokar</b> 2–1 <b>Saani Asnain</b> saved",
+      "icon": "⚽",
+      "time": 1785881801711
+    },
     {
       "text": "R5: <b>Danish Sheikh</b> 1–3 <b>Sami Sayyed</b> saved",
       "icon": "⚽",
