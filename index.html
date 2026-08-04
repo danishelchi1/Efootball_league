@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="Football League Manager - Track your private 12-player round-robin league with standings, fixtures, statistics and player profiles.">
+<title>Football League Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<!-- Undo Bar -->
+<div id="undo-bar" class="undo-bar hidden">
+  <span id="undo-msg">Action performed</span>
+  <button onclick="undoAction()" class="undo-btn">↩ Undo</button>
+</div>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="header-icon">⚽</span>
+      <div>
+        <h1 id="league-name-display" class="league-title" onclick="editLeagueName()">Football Premier League 2026</h1>
+        <span class="league-subtitle">12-Player Round Robin</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleSearch()" title="Search" id="search-toggle-btn">🔍</button>
+      <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">🌙</button>
+      <button class="icon-btn" onclick="showSection('admin')" title="Admin">⚙️</button>
+    </div>
+  </div>
+  <div id="search-bar" class="search-bar hidden">
+    <input type="text" id="global-search" placeholder="Search players, matches..." oninput="globalSearch(this.value)">
+    <div id="search-results" class="search-results"></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-btn active" onclick="showSection('dashboard')" data-section="dashboard">
+    <span class="nav-icon">🏠</span><span class="nav-label">Home</span>
+  </button>
+  <button class="nav-btn" onclick="showSection('fixtures')" data-section="fixtures">
+    <span class="nav-icon">📅</span><span class="nav-label">Fixtures</span>
+  </button>
+  <button class="nav-btn" onclick="showSection('table')" data-section="table">
+    <span class="nav-icon">📊</span><span class="nav-label">Table</span>
+  </button>
+  <button class="nav-btn" onclick="showSection('stats')" data-section="stats">
+    <span class="nav-icon">🏆</span><span class="nav-label">Stats</span>
+  </button>
+  <button class="nav-btn" onclick="showSection('players')" data-section="players">
+    <span class="nav-icon">👥</span><span class="nav-label">Players</span>
+  </button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- DASHBOARD -->
+  <section id="section-dashboard" class="section active">
+    <div class="section-header">
+      <h2>Dashboard</h2>
+      <button class="badge-btn" onclick="editLeagueName()">✏️ Edit Name</button>
+    </div>
+
+    <div class="card progress-card">
+      <div class="progress-header">
+        <span class="progress-label">League Progress</span>
+        <span id="progress-text" class="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="progress-bar" class="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-details">
+        <span id="dash-round">Round <b>1</b> of 11</span>
+        <span id="dash-matches-played"><b>0</b> Played</span>
+        <span id="dash-matches-remaining"><b>55</b> Remaining</span>
+      </div>
+    </div>
+
+    <div class="stats-grid-4">
+      <div class="stat-card accent-green">
+        <span class="stat-icon">🏆</span>
+        <span class="stat-val" id="dash-total-played">0</span>
+        <span class="stat-key">Matches Played</span>
+      </div>
+      <div class="stat-card accent-blue">
+        <span class="stat-icon">📅</span>
+        <span class="stat-val" id="dash-remaining">55</span>
+        <span class="stat-key">Remaining</span>
+      </div>
+      <div class="stat-card accent-gold">
+        <span class="stat-icon">⚽</span>
+        <span class="stat-val" id="dash-total-goals">0</span>
+        <span class="stat-key">Total Goals</span>
+      </div>
+      <div class="stat-card accent-purple">
+        <span class="stat-icon">📈</span>
+        <span class="stat-val" id="dash-avg-goals">0.0</span>
+        <span class="stat-key">Goals/Match</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🥇 Top 3 Players</div>
+      <div id="top3-container" class="top3-grid">
+        <div class="top3-empty">No matches played yet</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📰 Recent Activity</div>
+      <div id="recent-activity" class="activity-feed">
+        <div class="activity-empty">No activity yet. Enter some match results!</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⏱️ Last 5 Completed Matches</div>
+      <div id="last5-matches" class="last5-list">
+        <div class="empty-state">No completed matches yet</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIXTURES -->
+  <section id="section-fixtures" class="section">
+    <div class="section-header">
+      <h2>Fixtures</h2>
+      <div class="header-controls">
+        <select id="round-filter" onchange="filterRound(this.value)" class="round-select">
+          <option value="all">All Rounds</option>
+        </select>
+      </div>
+    </div>
+    <div id="fixtures-container"></div>
+  </section>
+
+  <!-- TABLE -->
+  <section id="section-table" class="section">
+    <div class="section-header">
+      <h2>League Table</h2>
+      <div class="header-controls gap-2">
+        <button class="badge-btn" onclick="exportPDF()">📄 PDF</button>
+        <button class="badge-btn" onclick="exportExcel()">📊 Excel</button>
+        <button class="badge-btn" onclick="window.print()">🖨️ Print</button>
+      </div>
+    </div>
+    <div class="table-scroll-wrap">
+      <table class="league-table" id="league-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="player-col">Player</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>GD</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="10" class="empty-state">No results yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-legend">
+      <span class="legend-item legend-gold">🥇 1st Place</span>
+      <span class="legend-item legend-silver">🥈 2nd Place</span>
+      <span class="legend-item legend-bronze">🥉 3rd Place</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section id="section-stats" class="section">
+    <div class="section-header">
+      <h2>Statistics</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚽ Top Scorers &amp; Assists</div>
+      <div class="scorer-note">
+        <small>💡 Log individual goal scorers &amp; assists below. These are separate from match scores.</small>
+      </div>
+      <div id="top-scorers-list" class="scorers-list"></div>
+      <div class="manual-scorer">
+        <div class="scorer-form">
+          <select id="scorer-player" class="form-select">
+            <option value="">Select Player</option>
+          </select>
+          <input type="number" id="scorer-goals" min="0" placeholder="Goals" class="score-input small">
+          <input type="number" id="scorer-assists" min="0" placeholder="Assists" class="score-input small">
+          <button onclick="saveScorer()" class="save-btn small">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-grid-2">
+      <div class="card stat-mini">
+        <div class="card-title">🧤 Clean Sheets</div>
+        <div id="clean-sheets-list" class="mini-list"></div>
+      </div>
+      <div class="card stat-mini">
+        <div class="card-title">🏅 Most Wins</div>
+        <div id="most-wins-list" class="mini-list"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid-2">
+      <div class="card stat-mini">
+        <div class="card-title">💥 Biggest Victory</div>
+        <div id="biggest-victory" class="record-display">—</div>
+      </div>
+      <div class="card stat-mini">
+        <div class="card-title">🔥 Highest Scoring</div>
+        <div id="highest-scoring" class="record-display">—</div>
+      </div>
+    </div>
+
+    <div class="stats-grid-2">
+      <div class="card stat-mini">
+        <div class="card-title">🔴 Win Streak</div>
+        <div id="win-streak" class="mini-list"></div>
+      </div>
+      <div class="card stat-mini">
+        <div class="card-title">🟡 Unbeaten Run</div>
+        <div id="unbeaten-run" class="mini-list"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 League Totals</div>
+      <div class="totals-grid">
+        <div class="total-item">
+          <span class="total-label">Total Goals</span>
+          <span class="total-val" id="stat-total-goals">0</span>
+        </div>
+        <div class="total-item">
+          <span class="total-label">Goals / Match</span>
+          <span class="total-val" id="stat-gpm">0.00</span>
+        </div>
+        <div class="total-item">
+          <span class="total-label">Matches Played</span>
+          <span class="total-val" id="stat-played">0</span>
+        </div>
+        <div class="total-item">
+          <span class="total-label">Total Wins</span>
+          <span class="total-val" id="stat-wins">0</span>
+        </div>
+        <div class="total-item">
+          <span class="total-label">Total Draws</span>
+          <span class="total-val" id="stat-draws">0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYERS -->
+  <section id="section-players" class="section">
+    <div class="section-header">
+      <h2>Players</h2>
+      <input type="text" id="player-search" placeholder="🔍 Search..." oninput="filterPlayers(this.value)" class="search-input-sm">
+    </div>
+    <div id="players-grid" class="players-grid"></div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="section-admin" class="section">
+    <div class="section-header">
+      <button class="back-btn" onclick="showSection('dashboard')">← Back</button>
+      <h2>⚙️ Admin Panel</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✏️ League Settings</div>
+      <div class="form-group">
+        <label>League Name</label>
+        <div class="input-row">
+          <input type="text" id="admin-league-name" class="form-input" placeholder="League Name">
+          <button onclick="saveLeagueName()" class="save-btn">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👥 Rename Players</div>
+      <div id="rename-players-list" class="rename-list"></div>
+      <button onclick="savePlayerNames()" class="save-btn full-width mt-2">💾 Save All Names</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💾 Data Management</div>
+      <div class="admin-btn-grid">
+        <button onclick="exportJSON()" class="admin-btn export-btn">📤 Export JSON</button>
+        <button onclick="triggerImport()" class="admin-btn import-btn">📥 Import JSON</button>
+        <button onclick="exportPDF()" class="admin-btn pdf-btn">📄 Export PDF</button>
+        <button onclick="exportExcel()" class="admin-btn excel-btn">📊 Export Excel</button>
+      </div>
+      <input type="file" id="import-file" accept=".json" onchange="importJSON(this)" style="display:none">
+    </div>
+
+    <div class="card danger-card">
+      <div class="card-title">⚠️ Danger Zone</div>
+      <div class="admin-btn-grid">
+        <button onclick="requireAdmin(()=>resetLeague())" class="admin-btn danger-btn">🔄 Reset All Results</button>
+        <button onclick="requireAdmin(()=>regenerateFixtures())" class="admin-btn warning-btn">🔀 Regenerate Fixtures</button>
+      </div>
+      <p class="danger-warning">⚠ Resetting will clear ALL results and cannot be undone.</p>
+    </div>
+
+    <div class="card" style="border-color:var(--blue)">
+      <div class="card-title">🔐 Change Admin PIN</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Default PIN is <b>1234</b>. Change it immediately to keep admin rights private.</p>
+      <button onclick="changePIN()" class="admin-btn" style="background:#0d2a4a;color:var(--blue-light);border-color:var(--blue);width:100%">🔑 Change PIN</button>
+    </div>
+  </section>
+
+  <!-- PLAYER PROFILE -->
+  <section id="section-player-profile" class="section">
+    <div class="section-header">
+      <button class="back-btn" onclick="showSection('players')">← Players</button>
+      <h2 id="profile-player-name">Player Profile</h2>
+    </div>
+    <div id="player-profile-content"></div>
+  </section>
+
+</main>
+
+<!-- Admin Login Modal -->
+<div id="modal-admin-login" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-title">🔐 Admin Login</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Enter your admin PIN to make changes.</p>
+    <input type="password" id="admin-pin-input" class="form-input" placeholder="Enter PIN" autocomplete="off" inputmode="numeric" maxlength="20">
+    <div id="admin-login-error" style="color:var(--red);font-size:13px;margin-top:8px;min-height:18px"></div>
+    <div class="modal-actions">
+      <button onclick="submitAdminLogin()" class="save-btn">🔓 Login</button>
+      <button onclick="closeModal('modal-admin-login')" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit League Name Modal -->
+<div id="modal-league-name" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Edit League Name</div>
+    <input type="text" id="modal-league-input" class="form-input" placeholder="Enter league name">
+    <div class="modal-actions">
+      <button onclick="saveLeagueNameModal()" class="save-btn">Save</button>
+      <button onclick="closeModal('modal-league-name')" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Match Notes Modal -->
+<div id="modal-notes" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-title">📝 Match Notes</div>
+    <textarea id="modal-notes-input" class="form-textarea" placeholder="Add notes about this match..."></textarea>
+    <div class="modal-actions">
+      <button onclick="saveNotes()" class="save-btn">Save Notes</button>
+      <button onclick="closeModal('modal-notes')" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop -->
+<div id="modal-backdrop" class="modal-backdrop hidden" onclick="closeAllModals()"></div>
+
+<!-- Floating Admin Badge -->
+<button id="admin-badge" class="admin-badge">🔑 Admin Login</button>
+
+<script src="app.js"></script>
+</body>
+</html>
