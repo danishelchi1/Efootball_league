@@ -177,12 +177,12 @@
       "round": 3,
       "home": 0,
       "away": 1,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 7,
+      "awayScore": 2,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785880217193
     },
     {
       "id": 15,
@@ -814,6 +814,11 @@
     "3": false
   },
   "activity": [
+    {
+      "text": "R3: <b>Abdullah</b> 7–2 <b>Danish Elchi</b> saved",
+      "icon": "⚽",
+      "time": 1785880217193
+    },
     {
       "text": "R1: <b>As Afnan</b> 0–8 <b>Yasir</b> — Yasir wins",
       "icon": "⚽",
