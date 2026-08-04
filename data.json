@@ -429,12 +429,12 @@
       "round": 6,
       "home": 7,
       "away": 8,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 1,
+      "awayScore": 3,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785884133080
     },
     {
       "id": 36,
@@ -814,6 +814,11 @@
     "6": false
   },
   "activity": [
+    {
+      "text": "R6: <b>Danish Sheikh</b> 1–3 <b>Abubakar Khokar</b> saved",
+      "icon": "⚽",
+      "time": 1785884133080
+    },
     {
       "text": "R4: <b>Danish Sheikh</b> 2–0 <b>Tosif</b> saved",
       "icon": "⚽",
