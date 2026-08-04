@@ -31,10 +31,11 @@
       <span class="header-icon">⚽</span>
       <div>
         <h1 id="league-name-display" class="league-title" onclick="editLeagueName()">Football Premier League 2026</h1>
-        <span class="league-subtitle">12-Player Round Robin</span>
+        <span class="league-subtitle">12-Player Round Robin &nbsp;<span id="sync-badge" class="sync-badge badge-idle">☁️ Cloud</span></span>
       </div>
     </div>
     <div class="header-actions">
+      <button class="icon-btn" id="sync-btn" onclick="manualSync()" title="Sync from cloud">☁️</button>
       <button class="icon-btn" onclick="toggleSearch()" title="Search" id="search-toggle-btn">🔍</button>
       <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">🌙</button>
       <button class="icon-btn" onclick="showSection('admin')" title="Admin">⚙️</button>
@@ -325,8 +326,22 @@
 
     <div class="card" style="border-color:var(--blue)">
       <div class="card-title">🔐 Change Admin PIN</div>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Default PIN is <b>1234</b>. Change it immediately to keep admin rights private.</p>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Default PIN is <b>7248944444</b>. Change it to keep admin rights private.</p>
       <button onclick="changePIN()" class="admin-btn" style="background:#0d2a4a;color:var(--blue-light);border-color:var(--blue);width:100%">🔑 Change PIN</button>
+    </div>
+
+    <div class="card" style="border-color:var(--green)">
+      <div class="card-title">☁️ Cloud Sync Setup</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:10px">
+        Paste your GitHub Personal Access Token (with <b>repo</b> scope) once on your admin device.
+        All other players auto-receive updates every 30 seconds — no setup needed on their end.
+      </p>
+      <input type="password" id="sync-token-input" class="form-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button onclick="requireAdmin(()=>setSyncTokenUI())" class="admin-btn" style="flex:1;background:#0d2a1a;color:var(--green-light);border-color:var(--green)">💾 Save Token &amp; Push</button>
+        <button onclick="requireAdmin(()=>pushCloudData())" class="admin-btn" style="background:#0d2a1a;color:var(--green-light);border-color:var(--green)">🔄 Push Now</button>
+      </div>
+      <p style="font-size:11px;color:var(--text3);margin-top:8px">⚠ Token is saved only on this device's localStorage — never in the repo.</p>
     </div>
   </section>
 
