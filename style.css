@@ -810,3 +810,23 @@ body {
   cursor: not-allowed;
   background: var(--bg2);
 }
+
+/* ── Cloud Sync Badge ── */
+.sync-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  vertical-align: middle;
+  transition: all 0.3s;
+  letter-spacing: 0.3px;
+}
+.badge-idle    { background: rgba(99,110,123,0.2); color: var(--text3); }
+.badge-ok      { background: rgba(46,160,67,0.15); color: var(--green-light); }
+.badge-syncing { background: rgba(88,166,255,0.15); color: var(--blue-light); }
+.badge-error   { background: rgba(248,81,73,0.15);  color: var(--red); }
+
+/* Spin animation for sync button while fetching */
+@keyframes spin { to { transform: rotate(360deg); } }
+#sync-btn.syncing { animation: spin 0.8s linear infinite; }
