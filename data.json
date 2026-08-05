@@ -225,12 +225,12 @@
       "round": 3,
       "home": 8,
       "away": 10,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 1,
+      "awayScore": 1,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785895422234
     },
     {
       "id": 19,
@@ -814,6 +814,11 @@
     "5": false
   },
   "activity": [
+    {
+      "text": "R3: <b>Abubakar Khokar</b> 1–1 <b>Suhaib</b> saved",
+      "icon": "⚽",
+      "time": 1785895422234
+    },
     {
       "text": "R3: <b>Hamdan</b> 3–1 <b>Tosif</b> saved",
       "icon": "⚽",
