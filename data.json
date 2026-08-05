@@ -338,7 +338,7 @@
       "played": true,
       "locked": false,
       "note": "",
-      "timestamp": 1785952432639
+      "timestamp": 1785952434852
     },
     {
       "id": 28,
@@ -819,6 +819,11 @@
     {
       "text": "R5: <b>Umar Khokar</b> 3–2 <b>Danish Sheikh</b> saved",
       "icon": "⚽",
+      "time": 1785952434852
+    },
+    {
+      "text": "R5: <b>Umar Khokar</b> 3–2 <b>Danish Sheikh</b> saved",
+      "icon": "⚽",
       "time": 1785952432639
     },
     {
@@ -1060,11 +1065,6 @@
       "text": "R2: <b>Hamdan</b> 5ÃÂ¢ÃÂÃÂ2 <b>Saani Asnain</b> ÃÂ¢ÃÂÃÂ Hamdan wins",
       "icon": "ÃÂ¢ÃÂÃÂ½",
       "time": 1785875282517
-    },
-    {
-      "text": "R2: <b>Sami Sayyed</b> 3ÃÂ¢ÃÂÃÂ1 <b>Tosif</b> ÃÂ¢ÃÂÃÂ Sami Sayyed wins",
-      "icon": "ÃÂ¢ÃÂÃÂ½",
-      "time": 1785875402517
     }
   ]
 }
