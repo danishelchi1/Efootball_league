@@ -321,12 +321,12 @@
       "round": 5,
       "home": 2,
       "away": 6,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 6,
+      "awayScore": 1,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785895432705
     },
     {
       "id": 27,
@@ -814,6 +814,11 @@
     "5": false
   },
   "activity": [
+    {
+      "text": "R5: <b>Hamdan</b> 6–1 <b>As Afnan</b> saved",
+      "icon": "⚽",
+      "time": 1785895432705
+    },
     {
       "text": "R4: <b>Yasir</b> 8–3 <b>Suhaib</b> saved",
       "icon": "⚽",
