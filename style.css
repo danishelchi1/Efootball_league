@@ -750,8 +750,9 @@ body {
 .admin-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 .export-btn { background: var(--green-dim); color: var(--green-light); border-color: var(--green); }
 .import-btn { background: #0d2a4a; color: var(--blue-light); border-color: var(--blue); }
-.pdf-btn { background: #2a1010; color: #f87171; border-color: #dc2626; }
+.pdf-btn   { background: #2a1010; color: #f87171; border-color: #dc2626; }
 .excel-btn { background: #0f2a14; color: #4ade80; border-color: #16a34a; }
+.results-btn { background: #0a2233; color: #38bdf8; border-color: #0284c7; font-weight: 700; }
 .danger-btn { background: #2a0808; color: var(--red); border-color: #7f1d1d; }
 .warning-btn { background: #2a1c00; color: var(--gold-light); border-color: var(--gold); }
 .danger-warning { font-size: 12px; color: var(--red); text-align: center; }
