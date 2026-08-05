@@ -194,6 +194,17 @@ function changePIN() {
    INIT
 ═══════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', () => {
+  // ── PIN Migration: if device still has OLD default hash, replace it ──
+  const OLD_DEFAULT_HASH = 'e2m1j5'; // was hashPin('7248944444')
+  const NEW_DEFAULT_HASH = 'yhuab0'; // hashPin('7860')
+  const storedHash = localStorage.getItem(ADMIN_PIN_STORAGE);
+  if (!storedHash || storedHash === OLD_DEFAULT_HASH) {
+    // Overwrite with new default and force re-login
+    localStorage.setItem(ADMIN_PIN_STORAGE, NEW_DEFAULT_HASH);
+    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+  }
+  // ─────────────────────────────────────────────────────────────────────
+
   loadState();
   // If state is fresh or outdated, regenerate fixtures and seed results
   if (!state.fixtures.length) {
