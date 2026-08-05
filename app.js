@@ -46,8 +46,10 @@ let currentNotesMatchId = null;
    ‣ Default PIN on first launch: 1234
      Change it immediately from the Admin Panel → Change PIN.
 ═══════════════════════════════════════ */
-const ADMIN_SESSION_KEY = 'flm_admin';
-const ADMIN_PIN_STORAGE = 'flm_admin_pin';
+const ADMIN_SESSION_KEY  = 'flm_admin';
+const ADMIN_PIN_STORAGE  = 'flm_admin_pin';
+const DANGER_PIN_STORAGE = 'flm_danger_pin';  // separate PIN for Danger Zone
+const DANGER_PIN_HASH    = 'bep16y';          // hashPin('8770431463')
 
 /* ─── Cloud token: XOR-encoded with admin PIN as key ───────
    Encoded so GitHub's secret scanner cannot detect ghp_ pattern.
@@ -168,6 +170,22 @@ function requireAdmin(callback) {
 /* Open admin settings — requires PIN if not already logged in */
 function openAdminSettings() {
   requireAdmin(() => showSection('admin'));
+}
+
+/* ── Danger Zone: separate PIN gate ─────────────────────────────────── */
+function getDangerPinHash() {
+  return localStorage.getItem(DANGER_PIN_STORAGE) || DANGER_PIN_HASH;
+}
+
+function requireDanger(callback) {
+  // Show a dedicated red-themed PIN prompt for danger operations
+  const pin = prompt('🔴 DANGER ZONE — Enter Danger PIN to continue:');
+  if (!pin) return;
+  if (hashPin(pin) === getDangerPinHash()) {
+    callback();
+  } else {
+    showToast('❌ Wrong Danger PIN!', true);
+  }
 }
 
 function changePIN() {
