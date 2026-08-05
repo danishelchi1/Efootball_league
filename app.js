@@ -178,7 +178,6 @@ function getDangerPinHash() {
 }
 
 function requireDanger(callback) {
-  // Show a dedicated red-themed PIN prompt for danger operations
   const pin = prompt('🔴 DANGER ZONE — Enter Danger PIN to continue:');
   if (!pin) return;
   if (hashPin(pin) === getDangerPinHash()) {
@@ -186,6 +185,29 @@ function requireDanger(callback) {
   } else {
     showToast('❌ Wrong Danger PIN!', true);
   }
+}
+
+/* Unlock the blur overlay on the danger zone card */
+function unlockDangerZone() {
+  const pin = prompt('🔴 DANGER ZONE — Enter Super Admin PIN:');
+  if (!pin) return;
+  if (hashPin(pin) === getDangerPinHash()) {
+    const overlay = document.getElementById('danger-overlay');
+    const content = document.getElementById('danger-content');
+    if (overlay) overlay.classList.add('hidden');
+    if (content) content.classList.add('unlocked');
+    showToast('🔴 Danger Zone unlocked', false);
+  } else {
+    showToast('❌ Wrong Danger PIN!', true);
+  }
+}
+
+/* Re-lock danger zone (call when leaving admin section) */
+function lockDangerZone() {
+  const overlay = document.getElementById('danger-overlay');
+  const content = document.getElementById('danger-content');
+  if (overlay) overlay.classList.remove('hidden');
+  if (content) content.classList.remove('unlocked');
 }
 
 function changePIN() {
@@ -591,6 +613,11 @@ function applyTheme() {
    NAVIGATION
 ═══════════════════════════════════════ */
 function showSection(name) {
+  // Re-lock danger zone whenever leaving or re-entering admin
+  const prev = document.querySelector('.section.active');
+  const prevName = prev ? prev.id.replace('section-', '') : '';
+  if (prevName === 'admin' || name === 'admin') lockDangerZone();
+
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('section-' + name);
   if (target) target.classList.add('active');
