@@ -222,7 +222,74 @@ body {
   color: var(--text2); text-transform: uppercase;
   letter-spacing: 0.5px; margin-bottom: 12px;
 }
-.danger-card { border-color: #5a1515; }
+.danger-card { border-color: #5a1515; position: relative; overflow: hidden; }
+
+/* ── Danger Zone Blur / Lock Overlay ── */
+.danger-content-blur {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.4s ease;
+}
+.danger-content-blur.unlocked {
+  filter: none;
+  pointer-events: auto;
+  user-select: auto;
+}
+.danger-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 4, 4, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: inherit;
+  transition: opacity 0.35s ease;
+}
+.danger-overlay.hidden { display: none; }
+.danger-lock-ui {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.danger-lock-icon {
+  font-size: 40px;
+  animation: danger-pulse 2s ease-in-out infinite;
+}
+@keyframes danger-pulse {
+  0%,100% { transform: scale(1);   filter: drop-shadow(0 0 6px #ff2222); }
+  50%      { transform: scale(1.1); filter: drop-shadow(0 0 14px #ff4444); }
+}
+.danger-lock-title {
+  font-size: 15px; font-weight: 700;
+  color: #ff6060; letter-spacing: 0.5px;
+}
+.danger-lock-sub {
+  font-size: 12px; color: #cc4444; margin-bottom: 4px;
+}
+.danger-unlock-btn {
+  background: linear-gradient(135deg, #6b0000, #3a0000);
+  color: #ff8080;
+  border: 1.5px solid #882020;
+  border-radius: 10px;
+  padding: 10px 22px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(200,0,0,0.35);
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+.danger-unlock-btn:hover {
+  background: linear-gradient(135deg, #8b0000, #550000);
+  box-shadow: 0 0 24px rgba(200,0,0,0.55);
+  transform: translateY(-1px);
+}
+
 
 /* ── Progress Card ── */
 .progress-card { padding: 20px; }
