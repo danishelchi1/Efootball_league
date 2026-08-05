@@ -441,12 +441,12 @@
       "round": 6,
       "home": 10,
       "away": 3,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 7,
+      "awayScore": 0,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785951566756
     },
     {
       "id": 37,
@@ -816,6 +816,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R6: <b>Suhaib</b> 7–0 <b>Tosif</b> saved",
+      "icon": "⚽",
+      "time": 1785951566756
+    },
     {
       "text": "R6: <b>Saani Asnain</b> 0–5 <b>Umar Khokar</b> saved",
       "icon": "⚽",
