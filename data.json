@@ -357,12 +357,12 @@
       "round": 5,
       "home": 4,
       "away": 5,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 1,
+      "awayScore": 3,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785951703533
     },
     {
       "id": 30,
@@ -812,10 +812,15 @@
   "scorers": {},
   "lockedRounds": {
     "5": false,
-    "6": true,
+    "6": false,
     "7": false
   },
   "activity": [
+    {
+      "text": "R5: <b>Sami Sayyed</b> 1–3 <b>Yasir</b> saved",
+      "icon": "⚽",
+      "time": 1785951703533
+    },
     {
       "text": "R6: <b>Suhaib</b> 7–0 <b>Tosif</b> saved",
       "icon": "⚽",
