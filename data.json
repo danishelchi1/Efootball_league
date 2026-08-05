@@ -477,12 +477,12 @@
       "round": 7,
       "home": 1,
       "away": 4,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 0,
+      "awayScore": 0,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785914659858
     },
     {
       "id": 40,
@@ -815,6 +815,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R7: <b>Danish Elchi</b> 0–0 <b>Sami Sayyed</b> saved",
+      "icon": "⚽",
+      "time": 1785914659858
+    },
     {
       "text": "R1: <b>Hamdan</b> 1–2 <b>Danish Elchi</b> saved",
       "icon": "⚽",
