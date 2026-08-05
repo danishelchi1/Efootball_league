@@ -811,6 +811,7 @@
   ],
   "scorers": {},
   "lockedRounds": {
+    "1": true,
     "5": false,
     "6": false,
     "7": false
