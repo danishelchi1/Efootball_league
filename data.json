@@ -489,12 +489,12 @@
       "round": 7,
       "home": 2,
       "away": 8,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 2,
+      "awayScore": 2,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785929002922
     },
     {
       "id": 41,
@@ -816,6 +816,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R7: <b>Hamdan</b> 2–2 <b>Abubakar Khokar</b> saved",
+      "icon": "⚽",
+      "time": 1785929002922
+    },
     {
       "text": "R6: <b>Abdullah</b> 13–0 <b>Sami Sayyed</b> saved",
       "icon": "⚽",
