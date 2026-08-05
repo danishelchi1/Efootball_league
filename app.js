@@ -1576,6 +1576,109 @@ function exportPDF() {
   setTimeout(() => win.print(), 500);
 }
 
+function exportResults() {
+  const played = state.fixtures.filter(f => f.played);
+  if (!played.length) { showToast('No results to export yet!', true); return; }
+
+  // Group by round
+  const rounds = {};
+  played.forEach(f => {
+    if (!rounds[f.round]) rounds[f.round] = [];
+    rounds[f.round].push(f);
+  });
+
+  const roundBlocks = Object.keys(rounds).sort((a,b) => a-b).map(r => {
+    const matches = rounds[r].map(f => {
+      const home = esc(state.players[f.home]);
+      const away = esc(state.players[f.away]);
+      const hs = f.homeScore, as2 = f.awayScore;
+      const homeWin = hs > as2, awayWin = as2 > hs, draw = hs === as2;
+      const rowBg = draw ? '#1a1a2e' : 'transparent';
+      return `
+        <tr>
+          <td class="player-name ${homeWin ? 'winner' : ''}">${home}</td>
+          <td class="score-cell">
+            <span class="score-box ${homeWin?'win-box':draw?'draw-box':'loss-box'}">${hs}</span>
+            <span class="vs-sep">–</span>
+            <span class="score-box ${awayWin?'win-box':draw?'draw-box':'loss-box'}">${as2}</span>
+          </td>
+          <td class="player-name right ${awayWin ? 'winner' : ''}">${away}</td>
+          <td class="result-tag">${homeWin?'<span class="tag-w">W</span>':draw?'<span class="tag-d">D</span>':'<span class="tag-l">L</span>'}</td>
+        </tr>`;
+    }).join('');
+    return `
+      <div class="round-block">
+        <div class="round-header">⚽ Round ${r}</div>
+        <table class="results-table">
+          <thead><tr>
+            <th>Home</th><th>Score</th><th>Away</th><th>Result</th>
+          </tr></thead>
+          <tbody>${matches}</tbody>
+        </table>
+      </div>`;
+  }).join('');
+
+  const html = `<!DOCTYPE html><html><head><title>${esc(state.leagueName)} — Match Results</title>
+  <meta charset="UTF-8">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#e6edf3;padding:24px}
+    h1{text-align:center;font-size:22px;color:#58a6ff;border-bottom:2px solid #30363d;padding-bottom:12px;margin-bottom:6px}
+    .subtitle{text-align:center;font-size:12px;color:#8b949e;margin-bottom:24px}
+    .round-block{margin-bottom:28px}
+    .round-header{background:linear-gradient(90deg,#1f6feb,#388bfd22);color:#79c0ff;font-size:14px;font-weight:700;
+      padding:8px 14px;border-radius:8px 8px 0 0;border:1px solid #30363d;border-bottom:none;letter-spacing:0.5px}
+    .results-table{width:100%;border-collapse:collapse;border:1px solid #30363d;border-radius:0 0 8px 8px;overflow:hidden}
+    .results-table thead tr{background:#161b22}
+    .results-table th{padding:8px 12px;font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+    .results-table th:nth-child(1){text-align:right}
+    .results-table th:nth-child(3){text-align:left}
+    .results-table th:nth-child(2),.results-table th:nth-child(4){text-align:center}
+    .results-table tbody tr{border-top:1px solid #21262d;transition:background 0.2s}
+    .results-table tbody tr:hover{background:#161b22}
+    .player-name{padding:10px 14px;font-size:13px;font-weight:500;text-align:right;width:32%}
+    .player-name.right{text-align:left}
+    .player-name.winner{color:#3fb950;font-weight:700}
+    .score-cell{text-align:center;padding:8px 6px;white-space:nowrap;width:20%}
+    .score-box{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;
+      border-radius:6px;font-size:15px;font-weight:800}
+    .win-box{background:#1a3a1a;color:#3fb950;border:1.5px solid #3fb950}
+    .draw-box{background:#1a2a3a;color:#79c0ff;border:1.5px solid #388bfd}
+    .loss-box{background:#3a1a1a;color:#f85149;border:1.5px solid #f85149}
+    .vs-sep{margin:0 6px;color:#484f58;font-size:12px}
+    .result-tag{text-align:center;padding:8px 10px;width:10%}
+    .tag-w,.tag-d,.tag-l{display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:0.5px}
+    .tag-w{background:#1a3a1a;color:#3fb950;border:1px solid #3fb950}
+    .tag-d{background:#1a2a3a;color:#79c0ff;border:1px solid #388bfd}
+    .tag-l{background:#3a1a1a;color:#f85149;border:1px solid #f85149}
+    .summary{display:flex;gap:16px;justify-content:center;margin:20px 0;flex-wrap:wrap}
+    .sum-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:12px 20px;text-align:center;min-width:90px}
+    .sum-val{font-size:22px;font-weight:900;color:#58a6ff}
+    .sum-key{font-size:11px;color:#8b949e;margin-top:3px}
+    .footer{text-align:center;font-size:11px;color:#484f58;margin-top:24px;border-top:1px solid #21262d;padding-top:12px}
+    @media print{body{background:#fff;color:#111}
+      .score-box,.win-box,.draw-box,.loss-box,.tag-w,.tag-d,.tag-l{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body>
+  <h1>⚽ ${esc(state.leagueName)}</h1>
+  <div class="subtitle">Match Results — Generated ${new Date().toLocaleString()}</div>
+
+  <div class="summary">
+    <div class="sum-card"><div class="sum-val">${played.length}</div><div class="sum-key">Matches Played</div></div>
+    <div class="sum-card"><div class="sum-val">${played.reduce((s,f)=>s+f.homeScore+f.awayScore,0)}</div><div class="sum-key">Total Goals</div></div>
+    <div class="sum-card"><div class="sum-val">${Object.keys(rounds).length}</div><div class="sum-key">Rounds Done</div></div>
+    <div class="sum-card"><div class="sum-val">${played.filter(f=>f.homeScore===f.awayScore).length}</div><div class="sum-key">Draws</div></div>
+  </div>
+
+  ${roundBlocks}
+  <div class="footer">${esc(state.leagueName)} · 12-Player Round Robin · ${new Date().getFullYear()}</div>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  showToast('Match results exported! 📋');
+}
+
 function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
