@@ -453,12 +453,12 @@
       "round": 7,
       "home": 0,
       "away": 5,
-      "homeScore": 0,
-      "awayScore": 1,
+      "homeScore": 1,
+      "awayScore": 0,
       "played": true,
       "locked": false,
       "note": "",
-      "timestamp": 1785935621774
+      "timestamp": 1785935774880
     },
     {
       "id": 38,
@@ -816,6 +816,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R7: <b>Abdullah</b> 1–0 <b>Yasir</b> saved",
+      "icon": "⚽",
+      "time": 1785935774880
+    },
     {
       "text": "R7: <b>Abdullah</b> 0–1 <b>Yasir</b> saved",
       "icon": "⚽",
