@@ -103,9 +103,10 @@ function adminLogout() {
   showToast('Logged out 🔒');
 }
 
-/* Show / hide the floating admin badge */
+/* Update floating admin badge AND gear icon */
 function updateAdminUI() {
   const badge = document.getElementById('admin-badge');
+  const settingsBtn = document.getElementById('settings-btn');
   if (!badge) return;
   if (isAdmin()) {
     badge.textContent = '🟢 Admin';
@@ -114,11 +115,23 @@ function updateAdminUI() {
       if (confirm('Log out of admin mode?')) adminLogout();
     };
     badge.title = 'Click to log out';
+    // Gear icon: show unlocked settings icon
+    if (settingsBtn) {
+      settingsBtn.textContent = '⚙️';
+      settingsBtn.title = 'Admin Settings (logged in)';
+      settingsBtn.style.opacity = '1';
+    }
   } else {
     badge.textContent = '🔑 Admin Login';
     badge.classList.remove('admin-active');
     badge.onclick = () => openAdminLogin();
     badge.title = 'Log in as admin to edit results';
+    // Gear icon: show lock to indicate PIN required
+    if (settingsBtn) {
+      settingsBtn.textContent = '🔒';
+      settingsBtn.title = 'Admin Settings (PIN required)';
+      settingsBtn.style.opacity = '0.75';
+    }
   }
 }
 
@@ -151,6 +164,11 @@ function submitAdminLogin() {
 function requireAdmin(callback) {
   if (isAdmin()) { callback(); }
   else { openAdminLogin(callback); }
+}
+
+/* Open admin settings — requires PIN if not already logged in */
+function openAdminSettings() {
+  requireAdmin(() => showSection('admin'));
 }
 
 function changePIN() {
