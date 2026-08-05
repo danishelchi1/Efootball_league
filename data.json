@@ -513,12 +513,12 @@
       "round": 7,
       "home": 11,
       "away": 3,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 6,
+      "awayScore": 2,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785916110689
     },
     {
       "id": 43,
@@ -816,178 +816,183 @@
   },
   "activity": [
     {
-      "text": "R7: <b>Danish Elchi</b> 0–0 <b>Sami Sayyed</b> saved",
+      "text": "R7: <b>Umar Khokar</b> 6–2 <b>Tosif</b> saved",
       "icon": "⚽",
+      "time": 1785916110689
+    },
+    {
+      "text": "R7: <b>Danish Elchi</b> 0â0 <b>Sami Sayyed</b> saved",
+      "icon": "â½",
       "time": 1785914659858
     },
     {
-      "text": "R1: <b>Hamdan</b> 1–2 <b>Danish Elchi</b> saved",
-      "icon": "⚽",
+      "text": "R1: <b>Hamdan</b> 1â2 <b>Danish Elchi</b> saved",
+      "icon": "â½",
       "time": 1785914631502
     },
     {
-      "text": "R5: <b>Abdullah</b> 7–0 <b>Saani Asnain</b> saved",
-      "icon": "⚽",
+      "text": "R5: <b>Abdullah</b> 7â0 <b>Saani Asnain</b> saved",
+      "icon": "â½",
       "time": 1785913012283
     },
     {
-      "text": "R5: <b>Tosif</b> 2–1 <b>Abubakar Khokar</b> saved",
-      "icon": "⚽",
+      "text": "R5: <b>Tosif</b> 2â1 <b>Abubakar Khokar</b> saved",
+      "icon": "â½",
       "time": 1785912848546
     },
     {
-      "text": "R2: <b>Umar Khokar</b> 6–6 <b>Suhaib</b> saved",
-      "icon": "⚽",
+      "text": "R2: <b>Umar Khokar</b> 6â6 <b>Suhaib</b> saved",
+      "icon": "â½",
       "time": 1785912480364
     },
     {
-      "text": "R3: <b>Saani Asnain</b> 2–3 <b>Sami Sayyed</b> saved",
-      "icon": "⚽",
+      "text": "R3: <b>Saani Asnain</b> 2â3 <b>Sami Sayyed</b> saved",
+      "icon": "â½",
       "time": 1785896328275
     },
     {
-      "text": "R3: <b>Yasir</b> 4–1 <b>Umar Khokar</b> saved",
-      "icon": "⚽",
+      "text": "R3: <b>Yasir</b> 4â1 <b>Umar Khokar</b> saved",
+      "icon": "â½",
       "time": 1785896313114
-    },
-    {
-      "text": "R5: <b>Hamdan</b> 6–1 <b>As Afnan</b> saved",
-      "icon": "⚽",
-      "time": 1785895432705
-    },
-    {
-      "text": "R4: <b>Yasir</b> 8–3 <b>Suhaib</b> saved",
-      "icon": "⚽",
-      "time": 1785895429235
-    },
-    {
-      "text": "R4: <b>Abdullah</b> 5–2 <b>Hamdan</b> saved",
-      "icon": "⚽",
-      "time": 1785895425066
-    },
-    {
-      "text": "R3: <b>Abubakar Khokar</b> 1–1 <b>Suhaib</b> saved",
-      "icon": "⚽",
-      "time": 1785895422234
-    },
-    {
-      "text": "R3: <b>Hamdan</b> 3–1 <b>Tosif</b> saved",
-      "icon": "⚽",
-      "time": 1785895418566
-    },
-    {
-      "text": "R5: <b>Abdullah</b> 7–0 <b>Saani Asnain</b> saved",
-      "icon": "⚽",
-      "time": 1785884357273
-    },
-    {
-      "text": "R6: <b>Danish Sheikh</b> 1â3 <b>Abubakar Khokar</b> saved",
-      "icon": "â½",
-      "time": 1785884133080
-    },
-    {
-      "text": "R4: <b>Danish Sheikh</b> 2â0 <b>Tosif</b> saved",
-      "icon": "â½",
-      "time": 1785882128140
-    },
-    {
-      "text": "R5: <b>Danish Elchi</b> 2â2 <b>Tosif</b> saved",
-      "icon": "â½",
-      "time": 1785882079309
-    },
-    {
-      "text": "R4: <b>Sami Sayyed</b> 2â5 <b>Umar Khokar</b> saved",
-      "icon": "â½",
-      "time": 1785882023808
-    },
-    {
-      "text": "R4: <b>Danish Elchi</b> 4â2 <b>As Afnan</b> saved",
-      "icon": "â½",
-      "time": 1785881822715
-    },
-    {
-      "text": "R4: <b>Abubakar Khokar</b> 2â1 <b>Saani Asnain</b> saved",
-      "icon": "â½",
-      "time": 1785881801711
-    },
-    {
-      "text": "R5: <b>Danish Sheikh</b> 1â3 <b>Sami Sayyed</b> saved",
-      "icon": "â½",
-      "time": 1785881657610
     },
     {
       "text": "R5: <b>Hamdan</b> 6â1 <b>As Afnan</b> saved",
       "icon": "â½",
+      "time": 1785895432705
+    },
+    {
+      "text": "R4: <b>Yasir</b> 8â3 <b>Suhaib</b> saved",
+      "icon": "â½",
+      "time": 1785895429235
+    },
+    {
+      "text": "R4: <b>Abdullah</b> 5â2 <b>Hamdan</b> saved",
+      "icon": "â½",
+      "time": 1785895425066
+    },
+    {
+      "text": "R3: <b>Abubakar Khokar</b> 1â1 <b>Suhaib</b> saved",
+      "icon": "â½",
+      "time": 1785895422234
+    },
+    {
+      "text": "R3: <b>Hamdan</b> 3â1 <b>Tosif</b> saved",
+      "icon": "â½",
+      "time": 1785895418566
+    },
+    {
+      "text": "R5: <b>Abdullah</b> 7â0 <b>Saani Asnain</b> saved",
+      "icon": "â½",
+      "time": 1785884357273
+    },
+    {
+      "text": "R6: <b>Danish Sheikh</b> 1Ã¢ÂÂ3 <b>Abubakar Khokar</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785884133080
+    },
+    {
+      "text": "R4: <b>Danish Sheikh</b> 2Ã¢ÂÂ0 <b>Tosif</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785882128140
+    },
+    {
+      "text": "R5: <b>Danish Elchi</b> 2Ã¢ÂÂ2 <b>Tosif</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785882079309
+    },
+    {
+      "text": "R4: <b>Sami Sayyed</b> 2Ã¢ÂÂ5 <b>Umar Khokar</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785882023808
+    },
+    {
+      "text": "R4: <b>Danish Elchi</b> 4Ã¢ÂÂ2 <b>As Afnan</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785881822715
+    },
+    {
+      "text": "R4: <b>Abubakar Khokar</b> 2Ã¢ÂÂ1 <b>Saani Asnain</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785881801711
+    },
+    {
+      "text": "R5: <b>Danish Sheikh</b> 1Ã¢ÂÂ3 <b>Sami Sayyed</b> saved",
+      "icon": "Ã¢ÂÂ½",
+      "time": 1785881657610
+    },
+    {
+      "text": "R5: <b>Hamdan</b> 6Ã¢ÂÂ1 <b>As Afnan</b> saved",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785881644165
     },
     {
-      "text": "R3: <b>Abdullah</b> 7â2 <b>Danish Elchi</b> saved",
-      "icon": "â½",
+      "text": "R3: <b>Abdullah</b> 7Ã¢ÂÂ2 <b>Danish Elchi</b> saved",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785881629886
     },
     {
-      "text": "R3: <b>As Afnan</b> 1â3 <b>Danish Sheikh</b> saved",
-      "icon": "â½",
+      "text": "R3: <b>As Afnan</b> 1Ã¢ÂÂ3 <b>Danish Sheikh</b> saved",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785881628524
     },
     {
-      "text": "R1: <b>As Afnan</b> 0â8 <b>Yasir</b> â Yasir wins",
-      "icon": "â½",
+      "text": "R1: <b>As Afnan</b> 0Ã¢ÂÂ8 <b>Yasir</b> Ã¢ÂÂ Yasir wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874082517
     },
     {
-      "text": "R1: <b>Danish Sheikh</b> 5â3 <b>Abdullah</b> â Danish Sheikh wins",
-      "icon": "â½",
+      "text": "R1: <b>Danish Sheikh</b> 5Ã¢ÂÂ3 <b>Abdullah</b> Ã¢ÂÂ Danish Sheikh wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874202517
     },
     {
-      "text": "R1: <b>Umar Khokar</b> 4â4 <b>Abubakar Khokar</b> â Draw",
-      "icon": "â½",
+      "text": "R1: <b>Umar Khokar</b> 4Ã¢ÂÂ4 <b>Abubakar Khokar</b> Ã¢ÂÂ Draw",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874322517
     },
     {
-      "text": "R1: <b>Hamdan</b> 1â2 <b>Danish Elchi</b> â Danish Elchi wins",
-      "icon": "â½",
+      "text": "R1: <b>Hamdan</b> 1Ã¢ÂÂ2 <b>Danish Elchi</b> Ã¢ÂÂ Danish Elchi wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874442517
     },
     {
-      "text": "R1: <b>Sami Sayyed</b> 1â6 <b>Suhaib</b> â Suhaib wins",
-      "icon": "â½",
+      "text": "R1: <b>Sami Sayyed</b> 1Ã¢ÂÂ6 <b>Suhaib</b> Ã¢ÂÂ Suhaib wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874562517
     },
     {
-      "text": "R1: <b>Tosif</b> 1â0 <b>Saani Asnain</b> â Tosif wins",
-      "icon": "â½",
+      "text": "R1: <b>Tosif</b> 1Ã¢ÂÂ0 <b>Saani Asnain</b> Ã¢ÂÂ Tosif wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874682517
     },
     {
-      "text": "R2: <b>As Afnan</b> 0â8 <b>Abdullah</b> â Abdullah wins",
-      "icon": "â½",
+      "text": "R2: <b>As Afnan</b> 0Ã¢ÂÂ8 <b>Abdullah</b> Ã¢ÂÂ Abdullah wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874802517
     },
     {
-      "text": "R2: <b>Yasir</b> 3â2 <b>Abubakar Khokar</b> â Yasir wins",
-      "icon": "â½",
+      "text": "R2: <b>Yasir</b> 3Ã¢ÂÂ2 <b>Abubakar Khokar</b> Ã¢ÂÂ Yasir wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785874922517
     },
     {
-      "text": "R2: <b>Danish Sheikh</b> 2â1 <b>Danish Elchi</b> â Danish Sheikh wins",
-      "icon": "â½",
+      "text": "R2: <b>Danish Sheikh</b> 2Ã¢ÂÂ1 <b>Danish Elchi</b> Ã¢ÂÂ Danish Sheikh wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785875042517
     },
     {
-      "text": "R2: <b>Umar Khokar</b> 7â6 <b>Suhaib</b> â Umar Khokar wins",
-      "icon": "â½",
+      "text": "R2: <b>Umar Khokar</b> 7Ã¢ÂÂ6 <b>Suhaib</b> Ã¢ÂÂ Umar Khokar wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785875162517
     },
     {
-      "text": "R2: <b>Hamdan</b> 5â2 <b>Saani Asnain</b> â Hamdan wins",
-      "icon": "â½",
+      "text": "R2: <b>Hamdan</b> 5Ã¢ÂÂ2 <b>Saani Asnain</b> Ã¢ÂÂ Hamdan wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785875282517
     },
     {
-      "text": "R2: <b>Sami Sayyed</b> 3â1 <b>Tosif</b> â Sami Sayyed wins",
-      "icon": "â½",
+      "text": "R2: <b>Sami Sayyed</b> 3Ã¢ÂÂ1 <b>Tosif</b> Ã¢ÂÂ Sami Sayyed wins",
+      "icon": "Ã¢ÂÂ½",
       "time": 1785875402517
     }
   ]
