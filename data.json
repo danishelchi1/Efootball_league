@@ -417,12 +417,12 @@
       "round": 6,
       "home": 9,
       "away": 11,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 0,
+      "awayScore": 5,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785951523473
     },
     {
       "id": 35,
@@ -816,6 +816,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R6: <b>Saani Asnain</b> 0–5 <b>Umar Khokar</b> saved",
+      "icon": "⚽",
+      "time": 1785951523474
+    },
     {
       "text": "R6: <b>As Afnan</b> 0–5 <b>Abubakar Khokar</b> saved",
       "icon": "⚽",
