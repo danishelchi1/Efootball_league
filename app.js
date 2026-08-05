@@ -76,8 +76,7 @@ function hashPin(pin) {
 }
 
 function getStoredPinHash() {
-  // Default PIN hash = hashPin('7248944444')
-  return localStorage.getItem(ADMIN_PIN_STORAGE) || 'e2m1j5';
+  return localStorage.getItem(ADMIN_PIN_STORAGE) || 'yhuab0';
 }
 
 function isAdmin() {
