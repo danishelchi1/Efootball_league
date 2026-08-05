@@ -189,12 +189,12 @@
       "round": 3,
       "home": 2,
       "away": 3,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 3,
+      "awayScore": 1,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1785895418566
     },
     {
       "id": 16,
@@ -814,6 +814,11 @@
     "5": false
   },
   "activity": [
+    {
+      "text": "R3: <b>Hamdan</b> 3–1 <b>Tosif</b> saved",
+      "icon": "⚽",
+      "time": 1785895418566
+    },
     {
       "text": "R5: <b>Abdullah</b> 7–0 <b>Saani Asnain</b> saved",
       "icon": "⚽",
