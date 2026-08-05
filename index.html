@@ -317,9 +317,10 @@
 
     <div class="card danger-card">
       <div class="card-title">⚠️ Danger Zone</div>
+      <p style="font-size:12px;color:var(--red);margin-bottom:10px;opacity:0.85">🔴 Requires a separate Danger PIN</p>
       <div class="admin-btn-grid">
-        <button onclick="requireAdmin(()=>resetLeague())" class="admin-btn danger-btn">🔄 Reset All Results</button>
-        <button onclick="requireAdmin(()=>regenerateFixtures())" class="admin-btn warning-btn">🔀 Regenerate Fixtures</button>
+        <button onclick="requireDanger(()=>resetLeague())" class="admin-btn danger-btn">🔄 Reset All Results</button>
+        <button onclick="requireDanger(()=>regenerateFixtures())" class="admin-btn warning-btn">🔀 Regenerate Fixtures</button>
       </div>
       <p class="danger-warning">⚠ Resetting will clear ALL results and cannot be undone.</p>
     </div>
