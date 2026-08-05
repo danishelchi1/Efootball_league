@@ -812,6 +812,7 @@
   "scorers": {},
   "lockedRounds": {
     "5": false,
+    "6": true,
     "7": false
   },
   "activity": [
