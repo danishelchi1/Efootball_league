@@ -56,7 +56,11 @@ const DANGER_PIN_HASH    = 'bep16y';          // hashPin('8770431463')
    Only decoded in memory (sessionStorage) after correct PIN entry.
    Even if found, it only controls data.json in this one repo.
 ─────────────────────────────────────────────────────────── */
-const _ENC_TOK = 'UFpEZ39XZlZfcm1bVnZuRERcUVgEflZgW05ORUZ8RlVQQQhHXmBDZA==';
+// Admin token: XOR-encoded with admin PIN '7860' — decoded at login time
+const _ENC_TOK  = 'UFBGb3FbZFJcfmxZVXZhQEdQU1wEdFRoVUJMQUVwR1dTQQdDXWxBYA==';
+// Read token: XOR-encoded with fixed internal key — used by ALL users for cloud reads
+const _READ_TOK = 'Ag4cADQGMwY0dGpbVCsxHC8aAA1XE1BoUEwfFx4XAwIFHW5BWmZBNQ==';
+const _READ_KEY = 'efl_read_2026';
 
 function _decodeToken(pin) {
   try {
@@ -64,6 +68,17 @@ function _decodeToken(pin) {
     let out = '';
     for (let i = 0; i < enc.length; i++) {
       out += String.fromCharCode(enc.charCodeAt(i) ^ pin.charCodeAt(i % pin.length));
+    }
+    return out.startsWith('ghp_') || out.startsWith('github_pat_') ? out : '';
+  } catch { return ''; }
+}
+
+function _decodeReadToken() {
+  try {
+    const enc = atob(_READ_TOK);
+    let out = '';
+    for (let i = 0; i < enc.length; i++) {
+      out += String.fromCharCode(enc.charCodeAt(i) ^ _READ_KEY.charCodeAt(i % _READ_KEY.length));
     }
     return out.startsWith('ghp_') || out.startsWith('github_pat_') ? out : '';
   } catch { return ''; }
@@ -365,10 +380,11 @@ async function fetchCloudData(silent = false) {
   try {
     const apiUrl = `https://api.github.com/repos/${CLOUD_OWNER}/${CLOUD_REPO}/contents/${CLOUD_FILE}`;
 
-    // Always use GitHub Contents API — raw.githubusercontent.com has a 5-min CDN cache
-    // that ignores cache-bust params, making non-admin syncs stale.
-    // Admin uses their session token; everyone else uses the embedded read-only token.
-    const token = getSyncToken() || _decodeToken('7860');
+    // Admin uses their session token (decoded from PIN at login).
+    // Everyone else uses _READ_TOK — a fixed-key encoded token that never
+    // changes when the admin PIN changes, so reads always work.
+    const token = getSyncToken() || _decodeReadToken();
+    if (!token) throw new Error('No read token available');
 
     const res = await fetch(apiUrl, {
       headers: {
