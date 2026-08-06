@@ -501,12 +501,12 @@
       "round": 7,
       "home": 6,
       "away": 10,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 0,
+      "awayScore": 8,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1786047106583
     },
     {
       "id": 42,
@@ -549,12 +549,12 @@
       "round": 8,
       "home": 1,
       "away": 8,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 2,
+      "awayScore": 3,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1786047869365
     },
     {
       "id": 46,
@@ -817,6 +817,16 @@
   },
   "activity": [
     {
+      "text": "R8: <b>Danish Elchi</b> 2–3 <b>Abubakar Khokar</b> saved",
+      "icon": "⚽",
+      "time": 1786047869366
+    },
+    {
+      "text": "R7: <b>As Afnan</b> 0–8 <b>Suhaib</b> saved",
+      "icon": "⚽",
+      "time": 1786047106583
+    },
+    {
       "text": "R5: <b>Umar Khokar</b> 3–2 <b>Danish Sheikh</b> saved",
       "icon": "⚽",
       "time": 1785952434852
@@ -1055,16 +1065,6 @@
       "text": "R2: <b>Danish Sheikh</b> 2ÃÂ¢ÃÂÃÂ1 <b>Danish Elchi</b> ÃÂ¢ÃÂÃÂ Danish Sheikh wins",
       "icon": "ÃÂ¢ÃÂÃÂ½",
       "time": 1785875042517
-    },
-    {
-      "text": "R2: <b>Umar Khokar</b> 7ÃÂ¢ÃÂÃÂ6 <b>Suhaib</b> ÃÂ¢ÃÂÃÂ Umar Khokar wins",
-      "icon": "ÃÂ¢ÃÂÃÂ½",
-      "time": 1785875162517
-    },
-    {
-      "text": "R2: <b>Hamdan</b> 5ÃÂ¢ÃÂÃÂ2 <b>Saani Asnain</b> ÃÂ¢ÃÂÃÂ Hamdan wins",
-      "icon": "ÃÂ¢ÃÂÃÂ½",
-      "time": 1785875282517
     }
   ]
 }
