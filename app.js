@@ -363,29 +363,24 @@ function setSyncStatus(status) {
 async function fetchCloudData(silent = false) {
   setSyncStatus('syncing');
   try {
-    const token = getSyncToken();
-    let cloud;
+    const apiUrl = `https://api.github.com/repos/${CLOUD_OWNER}/${CLOUD_REPO}/contents/${CLOUD_FILE}`;
 
-    if (token) {
-      // Authenticated: use GitHub API — always fresh, no CDN caching
-      const apiUrl = `https://api.github.com/repos/${CLOUD_OWNER}/${CLOUD_REPO}/contents/${CLOUD_FILE}`;
-      const res = await fetch(apiUrl, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      });
-      if (!res.ok) throw new Error(`API ${res.status}`);
-      const json = await res.json();
-      cloud = JSON.parse(atob(json.content.replace(/\n/g, '')));
-    } else {
-      // Unauthenticated: raw URL with cache-bust (may lag up to 5 min on CDN)
-      const url = `https://raw.githubusercontent.com/${CLOUD_OWNER}/${CLOUD_REPO}/main/${CLOUD_FILE}?t=${Date.now()}`;
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`RAW ${res.status}`);
-      cloud = await res.json();
-    }
+    // Always use GitHub Contents API — raw.githubusercontent.com has a 5-min CDN cache
+    // that ignores cache-bust params, making non-admin syncs stale.
+    // Admin uses their session token; everyone else uses the embedded read-only token.
+    const token = getSyncToken() || _decodeToken('7860');
+
+    const res = await fetch(apiUrl, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Cache-Control': 'no-cache'
+      }
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const json = await res.json();
+    const cloud = JSON.parse(atob(json.content.replace(/\n/g, '')));
 
     if (!cloud || !cloud._v || !Array.isArray(cloud.fixtures)) {
       setSyncStatus('idle'); return;
@@ -464,8 +459,8 @@ function manualSync() {
 
 function startSyncPolling() {
   if (_syncPollTimer) clearInterval(_syncPollTimer);
-  // Poll every 30 seconds
-  _syncPollTimer = setInterval(() => fetchCloudData(true), 30000);
+  // Poll every 20 seconds (was 30s — reduced for faster sync)
+  _syncPollTimer = setInterval(() => fetchCloudData(true), 20000);
   // Refresh on tab focus (e.g. player switches from another tab/app)
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) fetchCloudData(true);
