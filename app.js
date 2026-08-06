@@ -402,20 +402,25 @@ async function fetchCloudData(silent = false) {
       setSyncStatus('idle'); return;
     }
 
-    // Find newest played-match timestamp in cloud vs local
-    const ts = arr => Math.max(0, ...arr.filter(f => f.played && f.timestamp).map(f => f.timestamp));
-    const cloudTs = ts(cloud.fixtures);
-    const localTs = ts(state.fixtures);
+    // Count played matches to detect actual change
+    const cloudPlayed = cloud.fixtures.filter(f => f.played).length;
+    const localPlayed = state.fixtures.filter(f => f.played).length;
+    const hasChange   = cloudPlayed !== localPlayed ||
+                        JSON.stringify(cloud.fixtures) !== JSON.stringify(state.fixtures);
 
-    // Non-admins ALWAYS take cloud; Admin only takes cloud if it's newer
-    if (!isAdmin() || cloudTs > localTs) {
+    // Non-admins: ALWAYS apply cloud (source of truth)
+    // Admins: only apply if cloud has more data (avoid overwriting in-progress edits)
+    if (!isAdmin() || cloudPlayed > localPlayed) {
       const savedTheme = state.theme;
       SYNC_FIELDS.forEach(k => { if (cloud[k] !== undefined) state[k] = cloud[k]; });
-      state.theme = savedTheme;  // keep device theme
+      state.theme = savedTheme;
       saveLocalOnly();
-      renderAll();
-      buildRoundFilter();
-      populateScorerSelect();
+      if (hasChange) {
+        renderAll();
+        buildRoundFilter();
+        populateScorerSelect();
+        if (silent && !isAdmin()) showToast('🔄 Results updated!', false);
+      }
     }
     setSyncStatus('ok');
     if (!silent) showToast('Synced from cloud ☁️');
@@ -428,7 +433,10 @@ async function fetchCloudData(silent = false) {
 
 async function pushCloudData() {
   const token = getSyncToken();
-  if (!token) return;   // No token on this device — skip push
+  if (!token) {
+    showToast('⚠️ No sync token — log out and log in again as admin', true);
+    return;
+  }
   setSyncStatus('syncing');
   try {
     const headers = {
@@ -441,10 +449,11 @@ async function pushCloudData() {
 
     // Get current SHA (required by GitHub API for updates)
     const shaRes  = await fetch(apiUrl, { headers });
+    if (!shaRes.ok) throw new Error(`SHA fetch failed: ${shaRes.status}`);
     const shaJson = await shaRes.json();
     const sha     = shaJson.sha;
 
-    // Build payload (only sync fields, skip theme/undoStack)
+    // Build payload
     const payload = {};
     SYNC_FIELDS.forEach(k => { payload[k] = state[k]; });
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
@@ -461,11 +470,11 @@ async function pushCloudData() {
       throw new Error(err.message || putRes.status);
     }
     setSyncStatus('ok');
-    showToast('Saved & synced to cloud ☁️');
+    showToast('✅ Saved & synced to cloud!');
   } catch(e) {
     setSyncStatus('error');
     console.error('pushCloudData error:', e);
-    showToast('Saved locally — cloud push failed ⚠️', true);
+    showToast('❌ Cloud push FAILED: ' + e.message, true);
   }
 }
 
