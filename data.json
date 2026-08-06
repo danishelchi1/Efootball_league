@@ -657,12 +657,12 @@
       "round": 9,
       "home": 5,
       "away": 3,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 7,
+      "awayScore": 3,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1786049172561
     },
     {
       "id": 55,
@@ -816,6 +816,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R9: <b>Yasir</b> 7–3 <b>Tosif</b> saved",
+      "icon": "⚽",
+      "time": 1786049172561
+    },
     {
       "text": "R1: <b>Tosif</b> 7–3 <b>Saani Asnain</b> saved",
       "icon": "⚽",
@@ -1060,11 +1065,6 @@
       "text": "R5: <b>Hamdan</b> 6ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ1 <b>As Afnan</b> saved",
       "icon": "ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ½",
       "time": 1785881644165
-    },
-    {
-      "text": "R3: <b>Abdullah</b> 7ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ2 <b>Danish Elchi</b> saved",
-      "icon": "ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ½",
-      "time": 1785881629886
     }
   ]
 }
