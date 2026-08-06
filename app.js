@@ -380,23 +380,31 @@ async function fetchCloudData(silent = false) {
   try {
     const apiUrl = `https://api.github.com/repos/${CLOUD_OWNER}/${CLOUD_REPO}/contents/${CLOUD_FILE}`;
 
-    // Admin uses their session token (decoded from PIN at login).
-    // Everyone else uses _READ_TOK — a fixed-key encoded token that never
-    // changes when the admin PIN changes, so reads always work.
-    const token = getSyncToken() || _decodeReadToken();
-    if (!token) throw new Error('No read token available');
+    // For READING: public repos work fine with no auth token at 60 req/hour.
+    // Admin uses their session token (higher rate limit + ensures fresh data after push).
+    // Everyone else uses no token — GitHub Contents API is public for this repo.
+    const adminToken = getSyncToken();
+    const headers = {
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    };
+    if (adminToken) headers['Authorization'] = `Bearer ${adminToken}`;
 
-    const res = await fetch(apiUrl, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Cache-Control': 'no-cache'
-      }
-    });
-    if (!res.ok) throw new Error(`API ${res.status}`);
-    const json = await res.json();
-    const cloud = JSON.parse(atob(json.content.replace(/\n/g, '')));
+    let cloud;
+    try {
+      // Primary: GitHub Contents API (always fresh, no CDN cache)
+      const res = await fetch(apiUrl, { headers, cache: 'no-store' });
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const json = await res.json();
+      cloud = JSON.parse(atob(json.content.replace(/\n/g, '')));
+    } catch (apiErr) {
+      // Fallback: raw URL with cache-bust
+      console.warn('API fetch failed, trying raw URL:', apiErr);
+      const rawUrl = `https://raw.githubusercontent.com/${CLOUD_OWNER}/${CLOUD_REPO}/main/${CLOUD_FILE}?t=${Date.now()}`;
+      const res2 = await fetch(rawUrl, { cache: 'no-store' });
+      if (!res2.ok) throw new Error(`Raw ${res2.status}`);
+      cloud = await res2.json();
+    }
 
     if (!cloud || !cloud._v || !Array.isArray(cloud.fixtures)) {
       setSyncStatus('idle'); return;
@@ -405,11 +413,11 @@ async function fetchCloudData(silent = false) {
     // Count played matches to detect actual change
     const cloudPlayed = cloud.fixtures.filter(f => f.played).length;
     const localPlayed = state.fixtures.filter(f => f.played).length;
-    const hasChange   = cloudPlayed !== localPlayed ||
-                        JSON.stringify(cloud.fixtures) !== JSON.stringify(state.fixtures);
+    const hasChange = cloudPlayed !== localPlayed ||
+                      JSON.stringify(cloud.fixtures) !== JSON.stringify(state.fixtures);
 
     // Non-admins: ALWAYS apply cloud (source of truth)
-    // Admins: only apply if cloud has more data (avoid overwriting in-progress edits)
+    // Admins: only apply if cloud has more played matches
     if (!isAdmin() || cloudPlayed > localPlayed) {
       const savedTheme = state.theme;
       SYNC_FIELDS.forEach(k => { if (cloud[k] !== undefined) state[k] = cloud[k]; });
@@ -426,7 +434,7 @@ async function fetchCloudData(silent = false) {
     if (!silent) showToast('Synced from cloud ☁️');
   } catch(e) {
     setSyncStatus('error');
-    if (!silent) showToast('Cloud sync failed — check connection', true);
+    if (!silent) showToast('Sync failed — check connection', true);
     console.warn('fetchCloudData error:', e);
   }
 }
