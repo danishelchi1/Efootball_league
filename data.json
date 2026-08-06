@@ -585,12 +585,12 @@
       "round": 8,
       "home": 6,
       "away": 3,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 2,
+      "awayScore": 8,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1786048086758
     },
     {
       "id": 49,
@@ -816,6 +816,11 @@
     "7": false
   },
   "activity": [
+    {
+      "text": "R8: <b>As Afnan</b> 2–8 <b>Tosif</b> saved",
+      "icon": "⚽",
+      "time": 1786048086758
+    },
     {
       "text": "R9: <b>As Afnan</b> 0–13 <b>Umar Khokar</b> saved",
       "icon": "⚽",
@@ -1060,11 +1065,6 @@
       "text": "R1: <b>Sami Sayyed</b> 1ÃÂ¢ÃÂÃÂ6 <b>Suhaib</b> ÃÂ¢ÃÂÃÂ Suhaib wins",
       "icon": "ÃÂ¢ÃÂÃÂ½",
       "time": 1785874562517
-    },
-    {
-      "text": "R1: <b>Tosif</b> 1ÃÂ¢ÃÂÃÂ0 <b>Saani Asnain</b> ÃÂ¢ÃÂÃÂ Tosif wins",
-      "icon": "ÃÂ¢ÃÂÃÂ½",
-      "time": 1785874682517
     }
   ]
 }
