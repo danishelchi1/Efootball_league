@@ -537,12 +537,12 @@
       "round": 8,
       "home": 7,
       "away": 4,
-      "homeScore": 0,
-      "awayScore": 1,
+      "homeScore": 1,
+      "awayScore": 0,
       "played": true,
       "locked": false,
       "note": "",
-      "timestamp": 1786048190331
+      "timestamp": 1786048199776
     },
     {
       "id": 45,
@@ -817,6 +817,11 @@
   },
   "activity": [
     {
+      "text": "R8: <b>Danish Sheikh</b> 1–0 <b>Sami Sayyed</b> saved",
+      "icon": "⚽",
+      "time": 1786048199776
+    },
+    {
       "text": "R8: <b>Danish Sheikh</b> 0–1 <b>Sami Sayyed</b> saved",
       "icon": "⚽",
       "time": 1786048190331
@@ -1060,11 +1065,6 @@
       "text": "R1: <b>As Afnan</b> 0ÃÂ¢ÃÂÃÂ8 <b>Yasir</b> ÃÂ¢ÃÂÃÂ Yasir wins",
       "icon": "ÃÂ¢ÃÂÃÂ½",
       "time": 1785874082517
-    },
-    {
-      "text": "R1: <b>Danish Sheikh</b> 5ÃÂ¢ÃÂÃÂ3 <b>Abdullah</b> ÃÂ¢ÃÂÃÂ Danish Sheikh wins",
-      "icon": "ÃÂ¢ÃÂÃÂ½",
-      "time": 1785874202517
     }
   ]
 }
