@@ -477,12 +477,12 @@
       "round": 7,
       "home": 1,
       "away": 4,
-      "homeScore": null,
-      "awayScore": null,
-      "played": false,
+      "homeScore": 0,
+      "awayScore": 0,
+      "played": true,
       "locked": false,
       "note": "",
-      "timestamp": null
+      "timestamp": 1786048029025
     },
     {
       "id": 40,
@@ -817,6 +817,11 @@
   },
   "activity": [
     {
+      "text": "R7: <b>Danish Elchi</b> 0–0 <b>Sami Sayyed</b> saved",
+      "icon": "⚽",
+      "time": 1786048029025
+    },
+    {
       "text": "Result deleted: R7 Danish Elchi vs Sami Sayyed",
       "icon": "🗑️",
       "time": 1786047999617
@@ -1060,11 +1065,6 @@
       "text": "R2: <b>As Afnan</b> 0ÃÂ¢ÃÂÃÂ8 <b>Abdullah</b> ÃÂ¢ÃÂÃÂ Abdullah wins",
       "icon": "ÃÂ¢ÃÂÃÂ½",
       "time": 1785874802517
-    },
-    {
-      "text": "R2: <b>Yasir</b> 3ÃÂ¢ÃÂÃÂ2 <b>Abubakar Khokar</b> ÃÂ¢ÃÂÃÂ Yasir wins",
-      "icon": "ÃÂ¢ÃÂÃÂ½",
-      "time": 1785874922517
     }
   ]
 }
